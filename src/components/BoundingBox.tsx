@@ -11,7 +11,7 @@ export interface Rectangle {
 const isAndroid = () => /\b(android)\b/i.test(navigator.userAgent);
 
 const BoundingBox = () => {
-  const [tool, setTool] = useState<String>("rectangle");
+  const [tool, setTool] = useState<string>("rectangle");
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
   const [selectedRect, setSelectedRect] = useState<number | null>(null);
   const [currentRect, setCurrentRect] = useState<Rectangle | null>(null);
