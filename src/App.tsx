@@ -1,5 +1,12 @@
+import Layout from "./components/layout/layout";
+import SolvingPage from "./containers/SolvingPage";
+
 function App() {
-  return (<>hey welcome</>);
+  return (
+    <Layout>
+        <SolvingPage />
+    </Layout>
+  );
 }
 
-export default App
+export default App;
