@@ -9,7 +9,7 @@ export async function getSingleBoundingBox(): Promise<BoundingBoxData> {
     setTimeout(() => {
       const responseData = {
         id: "02863e47-8565-4c0d-ac39-5c3b69762fee",
-        fileName: "https://th.bing.com/th/id/OIP.xQpJ3XdZ19bbWIGlx4x20AHaE7?pid=ImgDet&rs=1",
+        fileName: "vid_4_28840.jpg",
         target: "car",
       };
       resolve(responseData);
