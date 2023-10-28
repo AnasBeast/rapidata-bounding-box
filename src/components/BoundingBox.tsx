@@ -10,7 +10,12 @@ export interface Rectangle {
 
 const isAndroid = () => /\b(android)\b/i.test(navigator.userAgent);
 
-const BoundingBox = () => {
+interface BoundingBoxProps {
+  width: number;
+  height: number;
+}
+
+const BoundingBox = ({ width, height }: BoundingBoxProps) => {
   const [tool, setTool] = useState<string>("rectangle");
   const [rectangles, setRectangles] = useState<Rectangle[]>([]);
   const [selectedRect, setSelectedRect] = useState<number | null>(null);
@@ -240,6 +245,16 @@ const BoundingBox = () => {
     };
   }, [handleTouchStart, handleTouchEnd, handleTouchMove]);
 
+  useEffect(() => {
+    if (width && height) {
+      const canvas = canvasRef.current;
+      if(!canvas) return;
+      
+      canvas.width = width;
+      canvas.height = height;
+    }
+  }, [width, height])
+
   return (
     <div className="mt-4 relative">
       <ToolBar
@@ -249,9 +264,7 @@ const BoundingBox = () => {
       />
       <canvas
         ref={canvasRef}
-        className="absolute z-10"
-        width="640"
-        height="480"
+        className="absolute z-10 mt-4"
       />
     </div>
   );
