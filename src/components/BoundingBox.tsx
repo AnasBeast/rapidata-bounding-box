@@ -258,8 +258,9 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
   return (
     <div className="mt-4 relative">
       <ToolBar
-        selectedRectangle={selectedRect}
+        currentTool={tool}
         setCurrentTool={setTool}
+        selectedRectangle={selectedRect}
         onDelete={handleDeleteRect}
       />
       <canvas
