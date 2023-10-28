@@ -15,7 +15,7 @@ const ToolBar = ({ currentTool, setCurrentTool, selectedRectangle, onDelete }: T
         className="w-1/2 flex items-center justify-center border-r border-[#2A2E36]"
         onClick={() => setCurrentTool("selection")}
       >
-        <span className={currentTool === "selection" ? "hover:bg-[#384148] rounded-lg p-2 bg-[#384148]" : "hover:bg-[#384148] rounded-lg p-2 bg-transparent"}>
+        <span className={currentTool === "selection" ? "rounded-lg p-2 bg-[#384148]" : "rounded-lg p-2 bg-transparent"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
@@ -37,7 +37,7 @@ const ToolBar = ({ currentTool, setCurrentTool, selectedRectangle, onDelete }: T
             : setCurrentTool("rectangle")
         }
       >
-        <span className={currentTool === "rectangle" ? "hover:bg-[#384148] rounded-lg p-1.5 bg-[#384148]" : "hover:bg-[#384148] rounded-lg p-2 bg-transparent"}>
+        <span className={currentTool === "rectangle" ? "rounded-lg p-1.5 bg-[#384148]" : "rounded-lg p-2 bg-transparent"}>
           {selectedRectangle !== null && selectedRectangle !== -1 ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
