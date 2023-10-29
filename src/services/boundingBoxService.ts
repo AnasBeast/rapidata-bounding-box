@@ -35,7 +35,12 @@ interface UserGuess {
 
 export async function addUserGuess(userGuess: UserGuess) {
   try {
-    console.log(userGuess);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(userGuess);
+        resolve(true)
+      }, 1000)
+    })
   } catch (e) {
     console.log("Failed to submit bounding boxes", e);
   }
