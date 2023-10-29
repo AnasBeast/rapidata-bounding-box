@@ -38,8 +38,6 @@ const SolvingPage = () => {
     }
   }, []);
 
-  console.log(isSubmitting)
-
   const handleSubmit = () => {
     if (!imgDimensions || !boundingBoxData) return;
 
