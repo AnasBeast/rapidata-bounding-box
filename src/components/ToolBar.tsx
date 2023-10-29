@@ -8,7 +8,6 @@ interface ToolBarProps {
 }
 
 const ToolBar = ({ currentTool, setCurrentTool, selectedRectangle, onDelete }: ToolBarProps) => {
-  console.log("currentTool", currentTool)
   return (
     <div className="bg-[#0D111A] flex rounded-lg h-11 p-1 fill-[#1D4ED8] mt-9">
       <button

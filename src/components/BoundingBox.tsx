@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, createContext, useContext, useEffect, useRef, useState } from "react";
 import ToolBar from "./ToolBar";
 
 export interface Rectangle {
@@ -10,6 +10,22 @@ export interface Rectangle {
 
 const isAndroid = () => /\b(android)\b/i.test(navigator.userAgent);
 
+const BoundingBoxContext = createContext<{ boundingBoxs: Rectangle[], setBoundingBoxs: Dispatch<React.SetStateAction<Rectangle[]>>}>({ boundingBoxs: [], setBoundingBoxs: () => {} });
+
+export const useBoundingBoxContext = () => {
+  return useContext(BoundingBoxContext);
+}
+
+export const BoundingBoxProvider = ({children}: { children: React.ReactNode }) => {
+  const [boundingBoxs, setBoundingBoxs] = useState<Rectangle[]>([]);
+
+  return (
+    <BoundingBoxContext.Provider value={{ boundingBoxs, setBoundingBoxs }}>
+      {children}
+    </BoundingBoxContext.Provider>
+  );
+}
+
 interface BoundingBoxProps {
   width: number;
   height: number;
@@ -17,7 +33,7 @@ interface BoundingBoxProps {
 
 const BoundingBox = ({ width, height }: BoundingBoxProps) => {
   const [tool, setTool] = useState<string>("rectangle");
-  const [rectangles, setRectangles] = useState<Rectangle[]>([]);
+  const { boundingBoxs, setBoundingBoxs } = useBoundingBoxContext();
   const [selectedRect, setSelectedRect] = useState<number | null>(null);
   const [currentRect, setCurrentRect] = useState<Rectangle | null>(null);
   const [activeControlPoint, setActiveControlPoint] = useState<string | null>(
@@ -69,7 +85,7 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
     if (tool === "rectangle") {
       setCurrentRect({ x, y, width: 0, height: 0 });
     } else if (tool === "selection") {
-      const foundRect = rectangles.findIndex((r, idx) => {
+      const foundRect = boundingBoxs.findIndex((r, idx) => {
         const controlPointsOffset = 8;
         const withinInnerRect =
           x >= r.x && x <= r.x + r.width && y >= r.y && y <= r.y + r.height;
@@ -85,7 +101,7 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
       });
 
       if (foundRect !== -1) {
-        const controlPoint = identifyControlPoint(x, y, rectangles[foundRect]);
+        const controlPoint = identifyControlPoint(x, y, boundingBoxs[foundRect]);
         if (controlPoint) {
           setActiveControlPoint(controlPoint);
           setInitialTouchPoint({ x, y });
@@ -123,8 +139,8 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
       if (activeControlPoint && initialTouchPoint) {
         const deltaX = x - initialTouchPoint.x;
         const deltaY = y - initialTouchPoint.y;
-        let rect = { ...rectangles[selectedRect] };
-        let newRectangles = [...rectangles];
+        let rect = { ...boundingBoxs[selectedRect] };
+        let newRectangles = [...boundingBoxs];
         switch (activeControlPoint) {
           case "top-left":
             rect.x += deltaX;
@@ -150,7 +166,7 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
             break;
         }
         newRectangles[selectedRect] = rect;
-        setRectangles(newRectangles);
+        setBoundingBoxs(newRectangles);
         setInitialTouchPoint({ x, y });
       }
     }
@@ -159,9 +175,9 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
   const handleTouchEnd = (e: TouchEvent) => {
     e.preventDefault();
     if (tool === "rectangle" && currentRect != null) {
-      setRectangles((prevRects) => [...prevRects, currentRect]);
+      setBoundingBoxs((prevRects) => [...prevRects, currentRect]);
 
-      setSelectedRect(rectangles.length);
+      setSelectedRect(boundingBoxs.length);
       setTool("selection");
       setCurrentRect(null);
     } else {
@@ -177,7 +193,7 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    rectangles.forEach((rect, idx) => {
+    boundingBoxs.forEach((rect, idx) => {
       ctx.strokeStyle = "#1D4ED8";
       ctx.lineWidth = 2;
       ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
@@ -218,16 +234,16 @@ const BoundingBox = ({ width, height }: BoundingBoxProps) => {
 
   const handleDeleteRect = () => {
     if (selectedRect !== null && selectedRect !== -1) {
-      const newRectangles = [...rectangles];
+      const newRectangles = [...boundingBoxs];
       newRectangles.splice(selectedRect, 1);
-      setRectangles(newRectangles);
+      setBoundingBoxs(newRectangles);
       setSelectedRect(null);
     }
   };
 
   useEffect(() => {
     draw();
-  }, [rectangles, currentRect, selectedRect]);
+  }, [boundingBoxs, currentRect, selectedRect]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

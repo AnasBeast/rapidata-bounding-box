@@ -1,7 +1,7 @@
 export interface BoundingBoxData {
-    id: string;
-    fileName: string;
-    target: string;
+  id: string;
+  fileName: string;
+  target: string;
 }
 
 export async function getSingleBoundingBox(): Promise<BoundingBoxData> {
@@ -15,4 +15,33 @@ export async function getSingleBoundingBox(): Promise<BoundingBoxData> {
       resolve(responseData);
     }, 300);
   });
+}
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface BoundingBox {
+  topLeft: Point;
+  bottomRight: Point;
+}
+
+interface UserGuess {
+  id: string;
+  boundingBox: BoundingBox[];
+}
+
+
+export async function addUserGuess(userGuess: UserGuess) {
+  try {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(userGuess);
+        resolve(true)
+      }, 1000)
+    })
+  } catch (e) {
+    console.log("Failed to submit bounding boxes", e);
+  }
 }
