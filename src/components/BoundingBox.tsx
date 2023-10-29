@@ -10,7 +10,7 @@ export interface Rectangle {
 
 const isAndroid = () => /\b(android)\b/i.test(navigator.userAgent);
 
-const BoundingBoxContext = createContext<{ boundingBoxs: Rectangle[], setBoundingBoxs: Dispatch<React.SetStateAction<Rectangle[]>> }>([]);
+const BoundingBoxContext = createContext<{ boundingBoxs: Rectangle[], setBoundingBoxs: Dispatch<React.SetStateAction<Rectangle[]>>}>({ boundingBoxs: [], setBoundingBoxs: () => {} });
 
 export const useBoundingBoxContext = () => {
   return useContext(BoundingBoxContext);

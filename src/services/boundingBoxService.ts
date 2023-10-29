@@ -1,5 +1,3 @@
-import { Rectangle } from "../components/BoundingBox";
-
 export interface BoundingBoxData {
   id: string;
   fileName: string;
